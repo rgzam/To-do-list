@@ -98,6 +98,47 @@ function saveAndRender() {
   save();
   render();
 }
+let timer;
+let seconds = 0;
+
+function toggleTimer() {
+    if (!timer) {
+        timer = setInterval(updateTimer, 1000);
+        document.getElementById('timerButton').textContent = 'Stop Timer';
+        document.getElementById('restartButton').style.display = 'inline-block';
+    } else {
+        clearInterval(timer);
+        timer = null;
+        document.getElementById('timerButton').textContent = 'Start Timer';
+    }
+}
+
+function restartTimer() {
+    clearInterval(timer);
+    seconds = 0;
+    document.getElementById('timerDisplay').textContent = '00:00:00';
+    document.getElementById('timerButton').textContent = 'Start Timer';
+    document.getElementById('restartButton').style.display = 'none';
+}
+
+function updateTimer() {
+    seconds++;
+    const formattedTime = formatTime(seconds);
+    document.getElementById('timerDisplay').textContent = formattedTime;
+}
+
+function formatTime(totalSeconds) {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const remainingSeconds = totalSeconds % 60;
+
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+}
+
 
 // Create todo list item
 function createTodoElement(todo) {
